@@ -13,9 +13,17 @@
 
 #include "libft.h"
 
-#define GREEN_OK "\e[1;32m[OK]\e[0m"
-#define RED_KO   "\e[1;31m[KO]\e[0m"
+// ANSI escape codes.
+#define ANSI_GREEN "\e[1;32m"
+#define ANSI_RED   "\e[1;31m"
+#define ANSI_RESET "\e[0m"
+#define ANSI_CLEAR "\e[2J"
 
+// Color-coded OK and KO strings.
+#define GREEN_OK ANSI_GREEN "[OK]" ANSI_RESET
+#define RED_KO   ANSI_RED   "[KO]" ANSI_RESET
+
+// Assert with a custom message (same syntax as printf).
 #define ASSERT_MSG(condition, ...) do { \
 		int succeeded = (condition); \
 		printf("    %s ", succeeded ? GREEN_OK : RED_KO); \
@@ -25,8 +33,10 @@
 		tested++; \
 	} while (0)
 
+// Assert with the condition as the message.
 #define ASSERT(condition) ASSERT_MSG(condition, #condition)
 
+// Print a summary of passes/failures at the end of each section.
 #define SUMMARY() do { \
 		printf("%d/%d tests passed ", tested - failed, tested); \
 		printf("%s\n", failed == 0 ? GREEN_OK : RED_KO); \
@@ -34,6 +44,7 @@
 		total_failed += failed; \
 	} while (0)
 
+// 
 #define SECTION(title) do { \
 		if (tested > 0) { \
 			SUMMARY(); \
@@ -90,7 +101,7 @@ static void test_strlcat(const char *dst, const char *src, size_t length)
 
 int main()
 {
-	printf("\e[2J"); // Clear the screen.
+	printf(ANSI_CLEAR); // Clear the screen.
 
 	SECTION("ft_isalpha");
 	{
