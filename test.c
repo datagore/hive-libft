@@ -1,5 +1,5 @@
-// These lines are needed to silence warnings caused by passing weird arguments
-// to memset and bzero.
+// These lines silence warnigs caused by passing weird arguments to memset and
+// bzero.
 #pragma GCC diagnostic ignored "-Wmemset-transposed-args"
 #pragma GCC diagnostic ignored "-Wsuspicious-bzero"
 
@@ -14,18 +14,18 @@
 #include "libft.h"
 
 // ANSI escape codes.
-#define ANSI_GREEN "\e[1;32m"
-#define ANSI_RED   "\e[1;31m"
-#define ANSI_RESET "\e[0m"
-#define ANSI_CLEAR "\e[2J"
+#define ANSI_GREEN "\e[1;32m" // Sets the text color to green.
+#define ANSI_RED   "\e[1;31m" // Sets the text color to red.
+#define ANSI_RESET "\e[0m"    // Reset to default color.
+#define ANSI_CLEAR "\e[2J"    // Clear the screen.
 
 // Color-coded OK and KO strings.
-#define GREEN_OK ANSI_GREEN "[OK]" ANSI_RESET
-#define RED_KO   ANSI_RED   "[KO]" ANSI_RESET
+#define GREEN_OK (ANSI_GREEN "[OK]" ANSI_RESET)
+#define RED_KO   (ANSI_RED   "[KO]" ANSI_RESET)
 
 // Assert with a custom message (same syntax as printf).
 #define ASSERT_MSG(condition, ...) do { \
-		int succeeded = (condition); \
+		int succeeded = (condition) != 0; \
 		printf("    %s ", succeeded ? GREEN_OK : RED_KO); \
 		printf(__VA_ARGS__); \
 		printf("\n"); \
@@ -44,7 +44,8 @@
 		total_failed += failed; \
 	} while (0)
 
-// 
+// Begin a new section by printing its title, and also reset the pass/fail
+// counters.
 #define SECTION(title) do { \
 		if (tested > 0) { \
 			SUMMARY(); \
@@ -53,19 +54,25 @@
 		tested = failed = 0; \
 	} while (0)
 
+// Counters for keeping track how many test passed or failed, per section and
+// in total.
 static int tested, total_tested;
 static int failed, total_failed;
 
-static char capitalize(unsigned int index, char chr)
+// Convert a character to uppercase. Used for testing ft_strmapi.
+static char uppercase(unsigned int index, char chr)
 {
 	return ft_toupper(chr);
 }
 
-static void capitalize_in_place(unsigned int index, char* chr)
+// Convert a character to uppercase via a pointer. Used for testing ft_striteri.
+static void uppercase_in_place(unsigned int index, char* chr)
 {
 	*chr = ft_toupper(*chr);
 }
 
+// Increment an integer via a pointer. Used for testing the linked list
+// functions.
 static void increment_int(void *pointer)
 {
 	*((int*) pointer) += 1;
@@ -288,6 +295,7 @@ int main()
 		ASSERT(ft_strncmp("ab_", "ab_", 2) == strncmp("ab_", "ab_", 2));
 		ASSERT(ft_strncmp("ABC", "ABC", 999) == strncmp("ABC", "ABC", 999));
 		ASSERT(ft_strncmp("abc", "abcX", 999) == strncmp("abc", "abcX", 999));
+		ASSERT(ft_strncmp("abcX", "abc", 999) == strncmp("abcX", "abc", 999));
 		ASSERT(ft_strncmp("", "", 999) == strncmp("", "", 999));
 		ASSERT(ft_strncmp("", "", 0) == strncmp("", "", 0));
 	}
@@ -406,15 +414,15 @@ int main()
 
 	SECTION("ft_strmapi");
 	{
-		ASSERT(strcmp(ft_strmapi("abcDEF", capitalize), "ABCDEF") == 0);
-		ASSERT(strcmp(ft_strmapi("...", capitalize), "...") == 0);
-		ASSERT(strcmp(ft_strmapi("", capitalize), "") == 0);
+		ASSERT(strcmp(ft_strmapi("abcDEF", uppercase), "ABCDEF") == 0);
+		ASSERT(strcmp(ft_strmapi("...", uppercase), "...") == 0);
+		ASSERT(strcmp(ft_strmapi("", uppercase), "") == 0);
 	}
 
 	SECTION("ft_striteri");
 	{
 		char buffer[] = "abcDEF...";
-		ft_striteri(buffer, capitalize_in_place);
+		ft_striteri(buffer, uppercase_in_place);
 		ASSERT(strcmp(buffer, "ABCDEF...") == 0);
 	}
 
