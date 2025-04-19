@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:34:34 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/15 16:35:40 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/04/19 12:06:19 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_lstiter(t_list *node, void (*function)(void *))
 {
-	while (node != NULL)
+	while (node != NULL && function != NULL)
 	{
 		function(node->content);
 		node = node->next;
