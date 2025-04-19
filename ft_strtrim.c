@@ -12,14 +12,6 @@
 
 #include "libft.h"
 
-static int	char_is_in_set(char chr, const char *set)
-{
-	while (*set != '\0')
-		if (*set++ == chr)
-			return (1);
-	return (0);
-}
-
 char	*ft_strtrim(const char *string, const char *set)
 {
 	size_t	begin;
@@ -27,12 +19,12 @@ char	*ft_strtrim(const char *string, const char *set)
 	size_t	i;
 
 	i = 0;
-	while (char_is_in_set(string[i], set))
+	while (ft_strchr(set, string[i]) != NULL)
 		i++;
 	begin = i;
 	end = i;
 	while (string[i] != '\0')
-		if (!char_is_in_set(string[i++], set))
+		if (ft_strchr(set, string[i++]) == NULL)
 			end = i;
 	return (ft_substr(string, begin, end - begin));
 }
