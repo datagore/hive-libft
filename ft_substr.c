@@ -22,12 +22,8 @@ char	*ft_substr(char const *string, unsigned int start, size_t max_length)
 	length = 0;
 	while (string[length] != '\0' && length < max_length)
 		length++;
-	substring = malloc(length + 1);
+	substring = ft_calloc(1, length + 1);
 	if (substring != NULL)
-	{
-		substring[length] = '\0';
-		while (length-- != 0)
-			substring[length] = string[length];
-	}
+		ft_memcpy(substring, string, length);
 	return (substring);
 }
