@@ -10,8 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
+#ifndef LIBFT_H
+# define LIBFT_H
+
+# include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_list
 {
@@ -62,3 +65,5 @@ void	ft_lstdelone(t_list *list, void (*del)(void*));
 void	ft_lstclear(t_list **list, void (*del)(void*));
 void	ft_lstiter(t_list *list, void (*func)(void *));
 t_list	*ft_lstmap(t_list *list, void *(*func)(void *), void (*del)(void *));
+
+#endif
