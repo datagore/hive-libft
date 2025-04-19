@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:48:48 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/18 14:42:06 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/04/19 12:10:49 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_substr(char const *string, unsigned int start, size_t max_length)
 	size_t	length;
 	char	*substring;
 
+	if (string == NULL)
+		return (NULL);
 	while (*string != '\0' && start-- != 0)
 		string++;
 	length = 0;
