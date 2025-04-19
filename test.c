@@ -298,6 +298,7 @@ int main()
 		ASSERT(ft_strncmp("abcX", "abc", 999) == strncmp("abcX", "abc", 999));
 		ASSERT(ft_strncmp("", "", 999) == strncmp("", "", 999));
 		ASSERT(ft_strncmp("", "", 0) == strncmp("", "", 0));
+		ASSERT(ft_strncmp("test\200", "test\0", 6) == strncmp("test\200", "test\0", 6));
 	}
 
 	SECTION("ft_memchr");
