@@ -14,20 +14,12 @@
 
 char	*ft_strdup(const char *string)
 {
-	size_t	index;
 	size_t	length;
-	char	*result;
+	char	*duplicate;
 
 	length = ft_strlen(string);
-	result = malloc(length + 1);
-	if (result != NULL)
-	{
-		index = 0;
-		while (index <= length)
-		{
-			result[index] = string[index];
-			index++;
-		}
-	}
-	return (result);
+	duplicate = ft_calloc(1, length + 1);
+	if (duplicate != NULL)
+		ft_memcpy(duplicate, string, length);
+	return (duplicate);
 }
