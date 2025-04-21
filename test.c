@@ -1,7 +1,9 @@
 // These lines silence warnigs caused by passing weird arguments to memset and
 // bzero.
 #pragma GCC diagnostic ignored "-Wmemset-transposed-args"
+#ifdef __clang__
 #pragma GCC diagnostic ignored "-Wsuspicious-bzero"
+#endif
 
 #include <bsd/string.h>
 #include <ctype.h>
