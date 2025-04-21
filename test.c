@@ -216,9 +216,9 @@ int main()
 		enum {N = 10};
 		char a[N] = {0};
 		char b[N] = {0};
-		ASSERT(memmove(a, "abcdef", 6) && memmove(b, "abcdef", 6) && memcmp(a, b, N) == 0);
-		ASSERT(memmove(a, a + 1, 6) && memmove(b, b + 1, 6) && memcmp(a, b, N) == 0);
-		ASSERT(memmove(a + 1, a, 6) && memmove(b + 1, b, 6) && memcmp(a, b, N) == 0);
+		ASSERT(ft_memmove(a, "abcdef", 6) && memmove(b, "abcdef", 6) && memcmp(a, b, N) == 0);
+		ASSERT(ft_memmove(a, a + 1, 6) && memmove(b, b + 1, 6) && memcmp(a, b, N) == 0);
+		ASSERT(ft_memmove(a + 1, a, 6) && memmove(b + 1, b, 6) && memcmp(a, b, N) == 0);
 	}
 
 	SECTION("ft_strlcpy");
