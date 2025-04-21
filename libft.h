@@ -50,7 +50,7 @@ char	*ft_strjoin(const char *a, const char *b);
 char	*ft_strtrim(const char *string, const char *set);
 char	**ft_split(const char *string, char delimiter);
 char	*ft_itoa(int number);
-char	*ft_strmapi(char const *string, char (*func)(unsigned int, char));
+char	*ft_strmapi(const char *string, char (*func)(unsigned int, char));
 void	ft_striteri(char *string, void (*func)(unsigned int, char*));
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *string, int fd);
