@@ -108,6 +108,12 @@ static void test_strlcat(const char *dst, const char *src, size_t length)
 	ASSERT_MSG(return_a == return_b && memcmp(buffer_a, buffer_b, N) == 0, "ft_strlcat(\"%s\", \"%s\", %zu) == strlcat(\"%s\", \"%s\", %zu)", dst, src, length, dst, src, length);
 }
 
+// Return -1 if x is negative, 1 if it's positive, and 0 otherwise.
+static int sign(int x)
+{
+	return (x > 0) - (x < 0);
+}
+
 int main()
 {
 	printf(ANSI_CLEAR); // Clear the screen.
@@ -293,14 +299,14 @@ int main()
 
 	SECTION("ft_strncmp");
 	{
-		ASSERT(ft_strncmp("abc", "abc", 3) == strncmp("abc", "abc", 3));
-		ASSERT(ft_strncmp("ab_", "ab_", 2) == strncmp("ab_", "ab_", 2));
-		ASSERT(ft_strncmp("ABC", "ABC", 999) == strncmp("ABC", "ABC", 999));
-		ASSERT(ft_strncmp("abc", "abcX", 999) == strncmp("abc", "abcX", 999));
-		ASSERT(ft_strncmp("abcX", "abc", 999) == strncmp("abcX", "abc", 999));
-		ASSERT(ft_strncmp("", "", 999) == strncmp("", "", 999));
-		ASSERT(ft_strncmp("", "", 0) == strncmp("", "", 0));
-		ASSERT(ft_strncmp("test\200", "test\0", 6) == strncmp("test\200", "test\0", 6));
+		ASSERT(sign(ft_strncmp("abc", "abc", 3)) == sign(strncmp("abc", "abc", 3)));
+		ASSERT(sign(ft_strncmp("ab_", "ab_", 2)) == sign(strncmp("ab_", "ab_", 2)));
+		ASSERT(sign(ft_strncmp("ABC", "ABC", 999)) == sign(strncmp("ABC", "ABC", 999)));
+		ASSERT(sign(ft_strncmp("abc", "abcX", 999)) == sign(strncmp("abc", "abcX", 999)));
+		ASSERT(sign(ft_strncmp("abcX", "abc", 999)) == sign(strncmp("abcX", "abc", 999)));
+		ASSERT(sign(ft_strncmp("", "", 999)) == sign(strncmp("", "", 999)));
+		ASSERT(sign(ft_strncmp("", "", 0)) == sign(strncmp("", "", 0)));
+		ASSERT(sign(ft_strncmp("abc\200", "abc\0", 6)) == sign(strncmp("abc\200", "abc\0", 6)));
 	}
 
 	SECTION("ft_memchr");
