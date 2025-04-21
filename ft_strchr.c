@@ -14,12 +14,8 @@
 
 char	*ft_strchr(const char *str, int chr)
 {
-	while (1)
-	{
-		if (*str == (unsigned char) chr)
-			return ((char *) str);
-		if (*str++ == '\0')
-			break ;
-	}
+	while (*str != '\0' || chr == '\0')
+		if (*str++ == (unsigned char) chr)
+			return ((char *) str - 1);
 	return (NULL);
 }
