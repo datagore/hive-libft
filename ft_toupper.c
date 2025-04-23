@@ -14,5 +14,5 @@
 
 int	ft_toupper(int c)
 {
-	return c - ('a' - 'A') * ('a' <= c && c <= 'z');
+	return (c - ('a' - 'A') * ('a' <= c && c <= 'z'));
 }

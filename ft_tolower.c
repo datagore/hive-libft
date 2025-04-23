@@ -14,5 +14,5 @@
 
 int	ft_tolower(int c)
 {
-	return c + ('a' - 'A') * ('A' <= c && c <= 'Z');
+	return (c + ('a' - 'A') * ('A' <= c && c <= 'Z'));
 }
