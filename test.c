@@ -320,11 +320,11 @@ int main()
 
 	SECTION("ft_memcmp");
 	{
-		ASSERT(memcmp("abc", "abc", 3) == ft_memcmp("abc", "abc", 3));
-		ASSERT(memcmp("abc", "ABC", 3) == ft_memcmp("abc", "ABC", 3));
-		ASSERT(memcmp("ABC", "abc", 3) == ft_memcmp("ABC", "abc", 3));
-		ASSERT(memcmp("abc", "ab", 2) == ft_memcmp("abc", "ab", 2));
-		ASSERT(memcmp("", "", 0) == ft_memcmp("", "", 0));
+		ASSERT(sign(memcmp("abc", "abc", 3)) == sign(ft_memcmp("abc", "abc", 3)));
+		ASSERT(sign(memcmp("abc", "ABC", 3)) == sign(ft_memcmp("abc", "ABC", 3)));
+		ASSERT(sign(memcmp("ABC", "abc", 3)) == sign(ft_memcmp("ABC", "abc", 3)));
+		ASSERT(sign(memcmp("abc", "ab", 2)) == sign(ft_memcmp("abc", "ab", 2)));
+		ASSERT(sign(memcmp("", "", 0)) == sign(ft_memcmp("", "", 0)));
 	}
 
 	SECTION("ft_strnstr");
