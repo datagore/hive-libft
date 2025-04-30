@@ -70,7 +70,7 @@ bonus: $(NAME) $(BONUS_OBJECTS)
 	ar -rcs $^
 
 test: test.c bonus
-	cc $< $(NAME) -o $@ -lbsd
+	cc $< $(NAME) -o $@ -lbsd $(CFLAGS)
 	./$@
 
 .PHONY: all re fclean clean bonus test

@@ -64,12 +64,14 @@ static int failed, total_failed;
 // Convert a character to uppercase. Used for testing ft_strmapi.
 static char uppercase(unsigned int index, char chr)
 {
+	(void) index;
 	return ft_toupper(chr);
 }
 
 // Convert a character to uppercase via a pointer. Used for testing ft_striteri.
 static void uppercase_in_place(unsigned int index, char* chr)
 {
+	(void) index;
 	*chr = ft_toupper(*chr);
 }
 
