@@ -1,3 +1,9 @@
+// To skip tests for bonus exercises, either edit the line below, changing 1 to
+// 0. Alternatively, compile with `cc test.c libft.a -lbsd -DBONUS=0`.
+#ifndef BONUS
+#define BONUS 1 // Set this to 0 to skip test for bonus exercises.
+#endif
+
 // These lines silence warnigs caused by passing weird arguments to memset and
 // bzero.
 #pragma GCC diagnostic ignored "-Wmemset-transposed-args"
@@ -16,9 +22,9 @@
 #include "libft.h"
 
 // ANSI escape codes.
-#define ANSI_GREEN "\e[1;32m" // Sets the text color to green.
-#define ANSI_RED   "\e[1;31m" // Sets the text color to red.
-#define ANSI_RESET "\e[0m"    // Reset to default color.
+#define ANSI_GREEN "\e[1;32m" // Set the text color to green.
+#define ANSI_RED   "\e[1;31m" // Set the text color to red.
+#define ANSI_RESET "\e[0m"    // Reset to the default text color.
 #define ANSI_CLEAR "\e[2J"    // Clear the screen.
 
 // Color-coded OK and KO strings.
@@ -486,6 +492,8 @@ int main()
 		close(fd);
 	}
 
+#if BONUS
+
 	SECTION("ft_lstnew");
 	{
 		t_list *node = ft_lstnew((void*) 42);
@@ -578,6 +586,8 @@ int main()
 		ft_lstiter(list, increment_int);
 		ASSERT(nodes_visited == 3);
 	}
+
+#endif
 
 	SUMMARY();
 	printf("\nTOTAL: %d/%d tests passed ", total_tested - total_failed, total_tested);
