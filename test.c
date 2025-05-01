@@ -1,10 +1,10 @@
-// To skip tests for bonus exercises, either edit the line below, changing 1 to
-// 0. Alternatively, compile with `cc test.c libft.a -lbsd -DBONUS=0`.
+// To skip tests for bonus exercises, either edit the line below, setting 1 to
+// 0, or compile with `cc test.c libft.a -lbsd -DBONUS=0`.
 #ifndef BONUS
-#define BONUS 1 // Set this to 0 to skip test for bonus exercises.
+#define BONUS 1 // Set this to 0 to skip tests for bonus exercises.
 #endif
 
-// These lines silence warnigs caused by passing weird arguments to memset and
+// Ignore compiler warnings caused by passing weird arguments to memset and
 // bzero.
 #pragma GCC diagnostic ignored "-Wmemset-transposed-args"
 #ifdef __clang__
