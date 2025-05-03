@@ -345,6 +345,7 @@ int main()
 		ASSERT(strnstr("abc", "", 999) == ft_strnstr("abc", "", 999));
 		ASSERT(strnstr("", "abc", 999) == ft_strnstr("", "abc", 999));
 		ASSERT(strnstr("", "", 999) == ft_strnstr("", "", 999));
+		ASSERT(strnstr("", "", 0) == ft_strnstr("", "", 0));
 	}
 
 	SECTION("ft_atoi");
