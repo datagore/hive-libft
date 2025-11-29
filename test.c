@@ -7,6 +7,7 @@
 // Ignore compiler warnings caused by passing weird arguments to memset and
 // bzero.
 #pragma GCC diagnostic ignored "-Wmemset-transposed-args"
+#pragma GCC diagnostic ignored "-Wnonnull"
 #ifdef __clang__
 #pragma GCC diagnostic ignored "-Wsuspicious-bzero"
 #endif
@@ -116,12 +117,6 @@ static void test_strlcat(const char *dst, const char *src, size_t length)
 	ASSERT_MSG(return_a == return_b && memcmp(buffer_a, buffer_b, N) == 0, "ft_strlcat(\"%s\", \"%s\", %zu) == strlcat(\"%s\", \"%s\", %zu)", dst, src, length, dst, src, length);
 }
 
-// Return -1 if x is negative, 1 if it's positive, and 0 otherwise.
-static int sign(int x)
-{
-	return (x > 0) - (x < 0);
-}
-
 int main()
 {
 	printf(ANSI_CLEAR); // Clear the screen.
@@ -134,7 +129,8 @@ int main()
 		ASSERT(!!ft_isalpha('\0') == !!isalpha('\0'));
 		ASSERT(!!ft_isalpha(' ') == !!isalpha(' '));
 		ASSERT(!!ft_isalpha('~') == !!isalpha('~'));
-		ASSERT(!!ft_isalpha(0x7f) == !!isalpha(0x7f));
+		ASSERT(!!ft_isalpha(127) == !!isalpha(127));
+		ASSERT(!!ft_isalpha(128) == !!isalpha(128));
 		ASSERT(!!ft_isalpha(-1) == !!isalpha(-1));
 	}
 
@@ -146,7 +142,8 @@ int main()
 		ASSERT(!!ft_isdigit('\0') == !!isdigit('\0'));
 		ASSERT(!!ft_isdigit(' ') == !!isdigit(' '));
 		ASSERT(!!ft_isdigit('~') == !!isdigit('~'));
-		ASSERT(!!ft_isdigit(0x7f) == !!isdigit(0x7f));
+		ASSERT(!!ft_isdigit(127) == !!isdigit(127));
+		ASSERT(!!ft_isdigit(128) == !!isdigit(128));
 		ASSERT(!!ft_isdigit(-1) == !!isdigit(-1));
 	}
 
@@ -158,7 +155,8 @@ int main()
 		ASSERT(!!ft_isalnum('\0') == !!isalnum('\0'));
 		ASSERT(!!ft_isalnum(' ') == !!isalnum(' '));
 		ASSERT(!!ft_isalnum('~') == !!isalnum('~'));
-		ASSERT(!!ft_isalnum(0x7f) == !!isalnum(0x7f));
+		ASSERT(!!ft_isalnum(127) == !!isalnum(127));
+		ASSERT(!!ft_isalnum(128) == !!isalnum(128));
 		ASSERT(!!ft_isalnum(-1) == !!isalnum(-1));
 	}
 
@@ -170,7 +168,8 @@ int main()
 		ASSERT(!!ft_isascii('\0') == !!isascii('\0'));
 		ASSERT(!!ft_isascii(' ') == !!isascii(' '));
 		ASSERT(!!ft_isascii('~') == !!isascii('~'));
-		ASSERT(!!ft_isascii(0x7f) == !!isascii(0x7f));
+		ASSERT(!!ft_isascii(127) == !!isascii(127));
+		ASSERT(!!ft_isascii(128) == !!isascii(128));
 		ASSERT(!!ft_isascii(-1) == !!isascii(-1));
 	}
 
@@ -182,7 +181,8 @@ int main()
 		ASSERT(!!ft_isprint('\0') == !!isprint('\0'));
 		ASSERT(!!ft_isprint(' ') == !!isprint(' '));
 		ASSERT(!!ft_isprint('~') == !!isprint('~'));
-		ASSERT(!!ft_isprint(0x7f) == !!isprint(0x7f));
+		ASSERT(!!ft_isprint(127) == !!isprint(127));
+		ASSERT(!!ft_isprint(128) == !!isprint(128));
 		ASSERT(!!ft_isprint(-1) == !!isprint(-1));
 	}
 
@@ -191,6 +191,7 @@ int main()
 		ASSERT(ft_strlen("abc") == strlen("abc"));
 		ASSERT(ft_strlen("hello") == strlen("hello"));
 		ASSERT(ft_strlen("") == strlen(""));
+		ASSERT(ft_strlen(NULL) == 0);
 	}
 
 	SECTION("ft_memset");
@@ -200,6 +201,12 @@ int main()
 		ASSERT(memcmp(memset(a, 'b', 5), ft_memset(b, 'a', 5), 10) != 0);
 		ASSERT(memcmp(memset(a, 'a', 8), ft_memset(b, 'a', 8), 10) == 0);
 		ASSERT(memcmp(memset(a, 'c', 0), ft_memset(b, 'c', 0), 10) == 0);
+		ASSERT(memcmp(memset(a, 0, 5), ft_memset(b, 0, 5), 10) == 0);
+		ASSERT(memcmp(memset(a, -1, 5), ft_memset(b, -1, 5), 10) == 0);
+		ASSERT(memcmp(memset(a, -128, 5), ft_memset(b, -128, 5), 10) == 0);
+		ASSERT(memcmp(memset(a, 0xff, 5), ft_memset(b, 0xff, 5), 10) == 0);
+		ASSERT(memcmp(memset(a, 666, 5), ft_memset(b, 666, 5), 10) == 0);
+		ASSERT(ft_memset(a, 'a', 5) == a);
 	}
 
 	SECTION("ft_bzero");
@@ -217,6 +224,7 @@ int main()
 		bzero(a, sizeof(a));
 		ft_bzero(b, sizeof(b));
 		ASSERT(memcmp(a, b, sizeof(a)) == 0);
+		ASSERT(ft_memset(a, 'a', sizeof(a)) == a);
 	}
 
 	SECTION("ft_memcpy");
@@ -303,18 +311,21 @@ int main()
 		ASSERT(ft_strrchr("banana", 'n' + 256) == strrchr("banana", 'n' + 256));
 		ASSERT(ft_strrchr("", '+') == strrchr("", '+'));
 		ASSERT(ft_strrchr("", '\0') == strrchr("", '\0'));
+		ASSERT(ft_strrchr(NULL, 'a') == NULL);
 	}
 
 	SECTION("ft_strncmp");
 	{
-		ASSERT(sign(ft_strncmp("abc", "abc", 3)) == sign(strncmp("abc", "abc", 3)));
-		ASSERT(sign(ft_strncmp("ab_", "ab_", 2)) == sign(strncmp("ab_", "ab_", 2)));
-		ASSERT(sign(ft_strncmp("ABC", "ABC", 999)) == sign(strncmp("ABC", "ABC", 999)));
-		ASSERT(sign(ft_strncmp("abc", "abcX", 999)) == sign(strncmp("abc", "abcX", 999)));
-		ASSERT(sign(ft_strncmp("abcX", "abc", 999)) == sign(strncmp("abcX", "abc", 999)));
-		ASSERT(sign(ft_strncmp("", "", 999)) == sign(strncmp("", "", 999)));
-		ASSERT(sign(ft_strncmp("", "", 0)) == sign(strncmp("", "", 0)));
-		ASSERT(sign(ft_strncmp("abc\200", "abc\0", 6)) == sign(strncmp("abc\200", "abc\0", 6)));
+		ASSERT(ft_strncmp("abc", "abc", 3) == strncmp("abc", "abc", 3));
+		ASSERT(ft_strncmp("ab_", "ab_", 2) == strncmp("ab_", "ab_", 2));
+		ASSERT(ft_strncmp("ABC", "ABC", 999) == strncmp("ABC", "ABC", 999));
+		ASSERT(ft_strncmp("abc", "abcX", 999) == strncmp("abc", "abcX", 999));
+		ASSERT(ft_strncmp("abcX", "abc", 999) == strncmp("abcX", "abc", 999));
+		ASSERT(ft_strncmp("", "", 999) == strncmp("", "", 999));
+		ASSERT(ft_strncmp("", "", 0) == strncmp("", "", 0));
+		ASSERT(ft_strncmp("abc\200", "abc\0", 6) == strncmp("abc\200", "abc\0", 6));
+		ASSERT(ft_strncmp("abc", NULL, 6) == 0);
+		ASSERT(ft_strncmp(NULL, "abc", 6) == 0);
 	}
 
 	SECTION("ft_memchr");
@@ -324,15 +335,18 @@ int main()
 		ASSERT(memchr("A\xffZ", 0xff, 3) == ft_memchr("A\xffZ", 0xff, 3));
 		ASSERT(memchr("A\xffZ", 'Z', 3) == ft_memchr("A\xffZ", 'Z', 3));
 		ASSERT(memchr("", 'X', 0) == ft_memchr("", 'X', 0));
+		ASSERT(memchr(NULL, 'X', 0) == ft_memchr(NULL, 'X', 0));
+		ASSERT(ft_memchr(NULL, 'X', 1) == NULL);
 	}
 
 	SECTION("ft_memcmp");
 	{
-		ASSERT(sign(memcmp("abc", "abc", 3)) == sign(ft_memcmp("abc", "abc", 3)));
-		ASSERT(sign(memcmp("abc", "ABC", 3)) == sign(ft_memcmp("abc", "ABC", 3)));
-		ASSERT(sign(memcmp("ABC", "abc", 3)) == sign(ft_memcmp("ABC", "abc", 3)));
-		ASSERT(sign(memcmp("abc", "ab", 2)) == sign(ft_memcmp("abc", "ab", 2)));
-		ASSERT(sign(memcmp("", "", 0)) == sign(ft_memcmp("", "", 0)));
+		ASSERT(memcmp("abc", "abc", 3) == ft_memcmp("abc", "abc", 3));
+		ASSERT(memcmp("abc", "ABC", 3) == ft_memcmp("abc", "ABC", 3));
+		ASSERT(memcmp("ABC", "abc", 3) == ft_memcmp("ABC", "abc", 3));
+		ASSERT(memcmp("abc", "ab", 2) == ft_memcmp("abc", "ab", 2));
+		ASSERT(memcmp("", "", 0) == ft_memcmp("", "", 0));
+		ASSERT(memcmp(NULL, "", 0) == ft_memcmp(NULL, "", 0));
 	}
 
 	SECTION("ft_strnstr");
@@ -346,6 +360,10 @@ int main()
 		ASSERT(strnstr("", "abc", 999) == ft_strnstr("", "abc", 999));
 		ASSERT(strnstr("", "", 999) == ft_strnstr("", "", 999));
 		ASSERT(strnstr("", "", 0) == ft_strnstr("", "", 0));
+		ASSERT(strnstr(NULL, "", 0) == ft_strnstr(NULL, "", 0));
+		ASSERT(strnstr(NULL, "", 1) == ft_strnstr(NULL, "", 1));
+		ASSERT(ft_strnstr("", NULL, 1) == NULL);
+		ASSERT(ft_strnstr(NULL, NULL, 1) == NULL);
 	}
 
 	SECTION("ft_atoi");
@@ -355,10 +373,15 @@ int main()
 		ASSERT(atoi("-666") == ft_atoi("-666"));
 		ASSERT(atoi("+69") == ft_atoi("+69"));
 		ASSERT(atoi("2147483647") == ft_atoi("2147483647"));
+		ASSERT(atoi("2147483648") == ft_atoi("2147483648"));
 		ASSERT(atoi("-2147483648") == ft_atoi("-2147483648"));
+		ASSERT(atoi("-2147483649") == ft_atoi("-2147483649"));
+		ASSERT(atoi("9999999999999") == ft_atoi("9999999999999"));
 		ASSERT(atoi("   +123abc") == ft_atoi("   +123abc"));
 		ASSERT(atoi("-----1") == ft_atoi("-----1"));
 		ASSERT(atoi("abc") == ft_atoi("abc"));
+		ASSERT(atoi("") == ft_atoi(""));
+		ASSERT(ft_atoi(NULL) == 0);
 	}
 
 	SECTION("ft_calloc");
@@ -386,6 +409,7 @@ int main()
 		ASSERT(strcmp(ft_substr("hello", 0, 999), "hello") == 0);
 		ASSERT(strcmp(ft_substr("hello", 0, 0), "") == 0);
 		ASSERT(strcmp(ft_substr("hello", 999, 1), "") == 0);
+		ASSERT(ft_substr(NULL, 0, 3) == NULL);
 	}
 
 	SECTION("ft_strjoin");
@@ -403,6 +427,8 @@ int main()
 		ASSERT(strcmp(ft_strtrim("abc   ......", " ."), "abc") == 0);
 		ASSERT(strcmp(ft_strtrim("abc", " .+"), "abc") == 0);
 		ASSERT(strcmp(ft_strtrim("", ""), "") == 0);
+		ASSERT(ft_strtrim(NULL, "") == NULL);
+		ASSERT(ft_strtrim("", NULL) == NULL);
 	}
 
 	SECTION("ft_split");
@@ -435,6 +461,8 @@ int main()
 		ASSERT(strcmp(ft_strmapi("abcDEF", uppercase), "ABCDEF") == 0);
 		ASSERT(strcmp(ft_strmapi("...", uppercase), "...") == 0);
 		ASSERT(strcmp(ft_strmapi("", uppercase), "") == 0);
+		ASSERT(ft_strmapi(NULL, uppercase) == NULL);
+		ASSERT(ft_strmapi("abc", NULL) == NULL);
 	}
 
 	SECTION("ft_striteri");

@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:35:11 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/16 14:22:29 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/29 22:24:43 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@ int	ft_memcmp(const void *av, const void *bv, size_t length)
 	const unsigned char	*a;
 	const unsigned char	*b;
 
-	index = 0;
+	if (!av || !bv)
+		return (0);
 	a = (const unsigned char *) av;
 	b = (const unsigned char *) bv;
-	while (index < length)
-	{
+	index = -1;
+	while (++index < length)
 		if (a[index] != b[index])
 			return ((a[index] > b[index]) - (a[index] < b[index]));
-		index++;
-	}
 	return (0);
 }

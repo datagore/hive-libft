@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:48:48 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/19 12:10:49 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:56:35 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,13 @@
 char	*ft_substr(const char *string, unsigned int start, size_t max_length)
 {
 	size_t	length;
-	char	*substring;
 
-	if (string == NULL)
+	if (!string)
 		return (NULL);
-	while (*string != '\0' && start-- != 0)
+	while (*string && start--)
 		string++;
 	length = 0;
-	while (string[length] != '\0' && length < max_length)
+	while (string[length] && length < max_length)
 		length++;
-	substring = ft_calloc(1, length + 1);
-	if (substring != NULL)
-		ft_memcpy(substring, string, length);
-	return (substring);
+	return (ft_memcpy(ft_calloc(1, length + 1), string, length));
 }

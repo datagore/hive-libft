@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:15:44 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/19 12:05:04 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/29 22:28:41 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	ft_lstadd_front(t_list **list, t_list *node)
 {
-	if (list != NULL && node != NULL)
-	{
-		node->next = *list;
-		*list = node;
-	}
+	if (!list || !node)
+		return ;
+	node->next = *list;
+	*list = node;
 }

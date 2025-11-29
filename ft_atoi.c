@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:43:30 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/14 17:50:01 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/27 17:00:25 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 int	ft_atoi(const char *string)
 {
-	int	sign;
-	int	value;
+	long	sign;
+	long	value;
 
 	sign = 1;
 	value = 0;
+	if (!string)
+		return (0);
 	while (*string == ' ' || ('\t' <= *string && *string <= '\r'))
 		string++;
 	if ((*string == '+' || *string == '-') && *string++ == '-')

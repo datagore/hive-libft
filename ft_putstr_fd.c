@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:47:55 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/19 12:26:14 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/29 22:51:25 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	ft_putstr_fd(char *string, int fd)
 {
-	if (string != NULL)
+	if (string)
 		write(fd, string, ft_strlen(string));
 }

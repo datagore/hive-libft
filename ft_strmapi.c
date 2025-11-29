@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:42:51 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/19 12:19:32 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:18:49 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,13 @@
 
 char	*ft_strmapi(const char *string, char (*function)(unsigned int, char))
 {
+	char *const		result = ft_strdup(string);
 	unsigned int	index;
-	char			*result;
 
-	if (string == NULL || function == NULL)
+	if (!result || !function)
 		return (NULL);
-	result = ft_strdup(string);
-	if (result != NULL)
-	{
-		index = 0;
-		while (string[index] != '\0')
-		{
-			result[index] = function(index, string[index]);
-			index++;
-		}
-	}
+	index = -1;
+	while (string[++index])
+		result[index] = function(index, string[index]);
 	return (result);
 }

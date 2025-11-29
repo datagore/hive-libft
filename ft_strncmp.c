@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:26:42 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/19 11:59:41 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/29 22:58:42 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,13 @@
 
 int	ft_strncmp(const char *ac, const char *bc, size_t limit)
 {
-	size_t				index;
-	const unsigned char	*a;
-	const unsigned char	*b;
+	unsigned char *const	a = (unsigned char *) ac;
+	unsigned char *const	b = (unsigned char *) bc;
+	size_t					index;
 
-	index = 0;
-	a = (const unsigned char *) ac;
-	b = (const unsigned char *) bc;
-	while ((a[index] != '\0' || b[index] != '\0') && index < limit)
-	{
+	index = -1;
+	while (a && b && ++index < limit && (a[index] || b[index]))
 		if (a[index] != b[index])
 			return ((a[index] > b[index]) - (a[index] < b[index]));
-		index++;
-	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 17:24:10 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/18 12:13:11 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:33:01 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_strrchr(const char *str, int chr)
 	char	*found;
 
 	found = NULL;
-	while (1)
+	while (str)
 	{
 		if (*str == (unsigned char) chr)
 			found = (char *) str;

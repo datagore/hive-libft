@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:40:36 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/15 10:43:22 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/29 22:57:35 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ size_t	ft_strlcat(char *target, const char *source, size_t size)
 	size_t	length;
 
 	length = 0;
-	while (length < size && target[length] != '\0')
+	if (!target || !source)
+		return (length);
+	while (length < size && target[length])
 		length++;
-	while (*source != '\0')
+	while (*source)
 	{
 		if (length + 1 < size)
 			target[length] = *source;

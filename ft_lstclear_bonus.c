@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:30:34 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/19 12:05:23 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/29 22:31:20 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void	ft_lstclear(t_list **list, void (*del)(void*))
 	t_list	*node;
 	t_list	*next;
 
-	if (list != NULL)
+	if (!list)
+		return ;
+	node = *list;
+	while (node)
 	{
-		node = *list;
-		while (node != NULL)
-		{
-			next = node->next;
+		next = node->next;
+		if (del)
 			del(node->content);
-			free(node);
-			node = next;
-		}
-		*list = NULL;
+		free(node);
+		node = next;
 	}
+	*list = NULL;
 }

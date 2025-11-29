@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:33:51 by abostrom          #+#    #+#             */
-/*   Updated: 2025/04/18 13:38:21 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/27 18:10:16 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,19 @@ char	*ft_itoa(int number)
 	int		length;
 
 	length = get_length(number);
-	string = malloc(length + 1);
-	if (string != NULL)
+	string = ft_calloc(1, length + 1);
+	if (!string)
+		return (NULL);
+	string[0] = '0';
+	value = number;
+	if (value < 0)
+		value = -value;
+	while (value > 0)
 	{
-		string[0] = '0';
-		string[length] = '\0';
-		value = number;
-		if (value < 0)
-			value = -value;
-		while (value > 0)
-		{
-			string[--length] = value % 10 + '0';
-			value /= 10;
-		}
-		if (number < 0)
-			string[0] = '-';
+		string[--length] = value % 10 + '0';
+		value /= 10;
 	}
+	if (number < 0)
+		string[0] = '-';
 	return (string);
 }
