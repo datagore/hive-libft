@@ -50,13 +50,13 @@ HEADERS := libft.h
 NAME := libft.a
 CFLAGS = -Wall -Wextra -Werror
 
+all: $(NAME)
+
 $(NAME): $(OBJECTS)
 	ar -rcs $@ $^
 
 %.o: %.c $(HEADERS)
 	cc -c $< -o $@ $(CFLAGS)
-
-all: $(NAME)
 
 re: fclean all
 
