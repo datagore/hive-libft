@@ -71,7 +71,10 @@ bonus: $(NAME) $(BONUS_OBJECTS)
 
 test: test.c bonus
 	cc $< $(NAME) -o $@ -lbsd $(CFLAGS)
-	./$@
+	./$@ | less -SR
+
+test.c:
+	@ wget -q https://raw.githubusercontent.com/datagore/hive-libft/refs/heads/main/test.c
 
 norm:
 	norminette ft_*.c libft.h
@@ -122,7 +125,7 @@ eval:
 	ft_lstlast_bonus.c \
 	ft_lstiter_bonus.c \
 	ft_lstmap_bonus.c \
-	| pygmentize -O style=monokai | less -SRx4
+	| pygmentize -l c -O style=monokai | less -SRx4
 
 .PHONY: all re fclean clean bonus test norm eval
 .SECONDARY: $(OBJECTS) $(BONUS_OBJECTS)
