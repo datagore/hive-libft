@@ -121,6 +121,86 @@ int main()
 {
 	printf(ANSI_CLEAR); // Clear the screen.
 
+	SECTION("ft_strlen");
+	{
+		ASSERT(ft_strlen("abc") == strlen("abc"));
+		ASSERT(ft_strlen("hello") == strlen("hello"));
+		ASSERT(ft_strlen("") == strlen(""));
+		ASSERT(ft_strlen(NULL) == 0);
+	}
+
+	SECTION("ft_memcpy");
+	{
+		char a[10] = {0};
+		memset(a, 'a', sizeof(a));
+		ASSERT(memcmp(a, ft_memcpy(a, "hello", sizeof(a)), sizeof(a)) == 0);
+		ASSERT(memcmp(a, ft_memcpy(a, "abc", sizeof(a)), sizeof(a)) == 0);
+	}
+
+	SECTION("ft_memset");
+	{
+		char a[10] = {0};
+		char b[10] = {0};
+		ASSERT(memcmp(memset(a, 'b', 5), ft_memset(b, 'a', 5), 10) != 0);
+		ASSERT(memcmp(memset(a, 'a', 8), ft_memset(b, 'a', 8), 10) == 0);
+		ASSERT(memcmp(memset(a, 'c', 0), ft_memset(b, 'c', 0), 10) == 0);
+		ASSERT(memcmp(memset(a, 0, 5), ft_memset(b, 0, 5), 10) == 0);
+		ASSERT(memcmp(memset(a, -1, 5), ft_memset(b, -1, 5), 10) == 0);
+		ASSERT(memcmp(memset(a, -128, 5), ft_memset(b, -128, 5), 10) == 0);
+		ASSERT(memcmp(memset(a, 0xff, 5), ft_memset(b, 0xff, 5), 10) == 0);
+		ASSERT(memcmp(memset(a, 666, 5), ft_memset(b, 666, 5), 10) == 0);
+		ASSERT(ft_memset(a, 'a', 5) == a);
+	}
+
+	SECTION("ft_bzero");
+	{
+		char a[10] = {0};
+		char b[10] = {0};
+		memset(a, 'a', sizeof(a));
+		memset(b, 'a', sizeof(b));
+		bzero(a, 0);
+		ft_bzero(b, 0);
+		ASSERT(memcmp(a, b, sizeof(a)) == 0);
+		bzero(a, 5);
+		ft_bzero(b, 5);
+		ASSERT(memcmp(a, b, sizeof(a)) == 0);
+		bzero(a, sizeof(a));
+		ft_bzero(b, sizeof(b));
+		ASSERT(memcmp(a, b, sizeof(a)) == 0);
+		ASSERT(ft_memset(a, 'a', sizeof(a)) == a);
+	}
+
+	SECTION("ft_memmove");
+	{
+		enum {N = 10};
+		char a[N] = {0};
+		char b[N] = {0};
+		ASSERT(ft_memmove(a, "abcdef", 6) && memmove(b, "abcdef", 6) && memcmp(a, b, N) == 0);
+		ASSERT(ft_memmove(a, a + 1, 6) && memmove(b, b + 1, 6) && memcmp(a, b, N) == 0);
+		ASSERT(ft_memmove(a + 1, a, 6) && memmove(b + 1, b, 6) && memcmp(a, b, N) == 0);
+	}
+
+	SECTION("ft_memcmp");
+	{
+		ASSERT(memcmp("abc", "abc", 3) == ft_memcmp("abc", "abc", 3));
+		ASSERT(memcmp("abc", "ABC", 3) == ft_memcmp("abc", "ABC", 3));
+		ASSERT(memcmp("ABC", "abc", 3) == ft_memcmp("ABC", "abc", 3));
+		ASSERT(memcmp("abc", "ab", 2) == ft_memcmp("abc", "ab", 2));
+		ASSERT(memcmp("", "", 0) == ft_memcmp("", "", 0));
+		ASSERT(memcmp(NULL, "", 0) == ft_memcmp(NULL, "", 0));
+	}
+
+	SECTION("ft_memchr");
+	{
+		ASSERT(memchr("abc", 'b', 3) == ft_memchr("abc", 'b', 3));
+		ASSERT(memchr("abc", '?', 3) == ft_memchr("abc", '?', 3));
+		ASSERT(memchr("A\xffZ", 0xff, 3) == ft_memchr("A\xffZ", 0xff, 3));
+		ASSERT(memchr("A\xffZ", 'Z', 3) == ft_memchr("A\xffZ", 'Z', 3));
+		ASSERT(memchr("", 'X', 0) == ft_memchr("", 'X', 0));
+		ASSERT(memchr(NULL, 'X', 0) == ft_memchr(NULL, 'X', 0));
+		ASSERT(ft_memchr(NULL, 'X', 1) == NULL);
+	}
+
 	SECTION("ft_isalpha");
 	{
 		ASSERT(!!ft_isalpha('a') == !!isalpha('a'));
@@ -186,93 +266,6 @@ int main()
 		ASSERT(!!ft_isprint(-1) == !!isprint(-1));
 	}
 
-	SECTION("ft_strlen");
-	{
-		ASSERT(ft_strlen("abc") == strlen("abc"));
-		ASSERT(ft_strlen("hello") == strlen("hello"));
-		ASSERT(ft_strlen("") == strlen(""));
-		ASSERT(ft_strlen(NULL) == 0);
-	}
-
-	SECTION("ft_memset");
-	{
-		char a[10] = {0};
-		char b[10] = {0};
-		ASSERT(memcmp(memset(a, 'b', 5), ft_memset(b, 'a', 5), 10) != 0);
-		ASSERT(memcmp(memset(a, 'a', 8), ft_memset(b, 'a', 8), 10) == 0);
-		ASSERT(memcmp(memset(a, 'c', 0), ft_memset(b, 'c', 0), 10) == 0);
-		ASSERT(memcmp(memset(a, 0, 5), ft_memset(b, 0, 5), 10) == 0);
-		ASSERT(memcmp(memset(a, -1, 5), ft_memset(b, -1, 5), 10) == 0);
-		ASSERT(memcmp(memset(a, -128, 5), ft_memset(b, -128, 5), 10) == 0);
-		ASSERT(memcmp(memset(a, 0xff, 5), ft_memset(b, 0xff, 5), 10) == 0);
-		ASSERT(memcmp(memset(a, 666, 5), ft_memset(b, 666, 5), 10) == 0);
-		ASSERT(ft_memset(a, 'a', 5) == a);
-	}
-
-	SECTION("ft_bzero");
-	{
-		char a[10] = {0};
-		char b[10] = {0};
-		memset(a, 'a', sizeof(a));
-		memset(b, 'a', sizeof(b));
-		bzero(a, 0);
-		ft_bzero(b, 0);
-		ASSERT(memcmp(a, b, sizeof(a)) == 0);
-		bzero(a, 5);
-		ft_bzero(b, 5);
-		ASSERT(memcmp(a, b, sizeof(a)) == 0);
-		bzero(a, sizeof(a));
-		ft_bzero(b, sizeof(b));
-		ASSERT(memcmp(a, b, sizeof(a)) == 0);
-		ASSERT(ft_memset(a, 'a', sizeof(a)) == a);
-	}
-
-	SECTION("ft_memcpy");
-	{
-		char a[10] = {0};
-		memset(a, 'a', sizeof(a));
-		ASSERT(memcmp(a, ft_memcpy(a, "hello", sizeof(a)), sizeof(a)) == 0);
-		ASSERT(memcmp(a, ft_memcpy(a, "abc", sizeof(a)), sizeof(a)) == 0);
-	}
-
-	SECTION("ft_memmove");
-	{
-		enum {N = 10};
-		char a[N] = {0};
-		char b[N] = {0};
-		ASSERT(ft_memmove(a, "abcdef", 6) && memmove(b, "abcdef", 6) && memcmp(a, b, N) == 0);
-		ASSERT(ft_memmove(a, a + 1, 6) && memmove(b, b + 1, 6) && memcmp(a, b, N) == 0);
-		ASSERT(ft_memmove(a + 1, a, 6) && memmove(b + 1, b, 6) && memcmp(a, b, N) == 0);
-	}
-
-	SECTION("ft_strlcpy");
-	{
-		test_strlcpy("abc", "def", 999);
-		test_strlcpy("", "abcdef", 3);
-		test_strlcpy("", "abc", 0);
-	}
-
-	SECTION("ft_strlcat");
-	{
-		test_strlcat("hi ", "four", 0);
-		test_strlcat("words", "0123456", 5);
-		test_strlcat("abc", "def", 2);
-		test_strlcat("abc", "def", 3);
-		test_strlcat("abc", "def", 4);
-		test_strlcat("abc", "def", 5);
-		test_strlcat("abc", "def", 6);
-		test_strlcat("abc", "def", 7);
-		test_strlcat("", " words", 6);
-		test_strlcat("", " words", 5);
-		test_strlcat("abc", " defghi", 0);
-		test_strlcat("abc", " defghi", 1);
-		test_strlcat("abc", "", 3);
-		test_strlcat("abc", "", 0);
-		test_strlcat("abc", "", 10);
-		test_strlcat("", "", 0);
-		test_strlcat("", "", 999);
-	}
-
 	SECTION("ft_toupper");
 	{
 		ASSERT(ft_toupper('a') == toupper('a'));
@@ -314,39 +307,50 @@ int main()
 		ASSERT(ft_strrchr(NULL, 'a') == NULL);
 	}
 
-	SECTION("ft_strncmp");
+	SECTION("ft_strlcat");
 	{
-		ASSERT(ft_strncmp("abc", "abc", 3) == strncmp("abc", "abc", 3));
-		ASSERT(ft_strncmp("ab_", "ab_", 2) == strncmp("ab_", "ab_", 2));
-		ASSERT(ft_strncmp("ABC", "ABC", 999) == strncmp("ABC", "ABC", 999));
-		ASSERT(ft_strncmp("abc", "abcX", 999) == strncmp("abc", "abcX", 999));
-		ASSERT(ft_strncmp("abcX", "abc", 999) == strncmp("abcX", "abc", 999));
-		ASSERT(ft_strncmp("", "", 999) == strncmp("", "", 999));
-		ASSERT(ft_strncmp("", "", 0) == strncmp("", "", 0));
-		ASSERT(ft_strncmp("abc\200", "abc\0", 6) == strncmp("abc\200", "abc\0", 6));
-		ASSERT(ft_strncmp("abc", NULL, 6) == 0);
-		ASSERT(ft_strncmp(NULL, "abc", 6) == 0);
+		test_strlcat("hi ", "four", 0);
+		test_strlcat("words", "0123456", 5);
+		test_strlcat("abc", "def", 2);
+		test_strlcat("abc", "def", 3);
+		test_strlcat("abc", "def", 4);
+		test_strlcat("abc", "def", 5);
+		test_strlcat("abc", "def", 6);
+		test_strlcat("abc", "def", 7);
+		test_strlcat("", " words", 6);
+		test_strlcat("", " words", 5);
+		test_strlcat("abc", " defghi", 0);
+		test_strlcat("abc", " defghi", 1);
+		test_strlcat("abc", "", 3);
+		test_strlcat("abc", "", 0);
+		test_strlcat("abc", "", 10);
+		test_strlcat("", "", 0);
+		test_strlcat("", "", 999);
 	}
 
-	SECTION("ft_memchr");
+	SECTION("ft_strlcpy");
 	{
-		ASSERT(memchr("abc", 'b', 3) == ft_memchr("abc", 'b', 3));
-		ASSERT(memchr("abc", '?', 3) == ft_memchr("abc", '?', 3));
-		ASSERT(memchr("A\xffZ", 0xff, 3) == ft_memchr("A\xffZ", 0xff, 3));
-		ASSERT(memchr("A\xffZ", 'Z', 3) == ft_memchr("A\xffZ", 'Z', 3));
-		ASSERT(memchr("", 'X', 0) == ft_memchr("", 'X', 0));
-		ASSERT(memchr(NULL, 'X', 0) == ft_memchr(NULL, 'X', 0));
-		ASSERT(ft_memchr(NULL, 'X', 1) == NULL);
+		test_strlcpy("abc", "def", 999);
+		test_strlcpy("", "abcdef", 3);
+		test_strlcpy("", "abc", 0);
 	}
 
-	SECTION("ft_memcmp");
+	SECTION("ft_atoi");
 	{
-		ASSERT(memcmp("abc", "abc", 3) == ft_memcmp("abc", "abc", 3));
-		ASSERT(memcmp("abc", "ABC", 3) == ft_memcmp("abc", "ABC", 3));
-		ASSERT(memcmp("ABC", "abc", 3) == ft_memcmp("ABC", "abc", 3));
-		ASSERT(memcmp("abc", "ab", 2) == ft_memcmp("abc", "ab", 2));
-		ASSERT(memcmp("", "", 0) == ft_memcmp("", "", 0));
-		ASSERT(memcmp(NULL, "", 0) == ft_memcmp(NULL, "", 0));
+		ASSERT(atoi("42") == ft_atoi("42"));
+		ASSERT(atoi("0") == ft_atoi("0"));
+		ASSERT(atoi("-666") == ft_atoi("-666"));
+		ASSERT(atoi("+69") == ft_atoi("+69"));
+		ASSERT(atoi("2147483647") == ft_atoi("2147483647"));
+		ASSERT(atoi("2147483648") == ft_atoi("2147483648"));
+		ASSERT(atoi("-2147483648") == ft_atoi("-2147483648"));
+		ASSERT(atoi("-2147483649") == ft_atoi("-2147483649"));
+		ASSERT(atoi("9999999999999") == ft_atoi("9999999999999"));
+		ASSERT(atoi("   +123abc") == ft_atoi("   +123abc"));
+		ASSERT(atoi("-----1") == ft_atoi("-----1"));
+		ASSERT(atoi("abc") == ft_atoi("abc"));
+		ASSERT(atoi("") == ft_atoi(""));
+		ASSERT(ft_atoi(NULL) == 0);
 	}
 
 	SECTION("ft_strnstr");
@@ -366,22 +370,18 @@ int main()
 		ASSERT(ft_strnstr(NULL, NULL, 1) == NULL);
 	}
 
-	SECTION("ft_atoi");
+	SECTION("ft_strncmp");
 	{
-		ASSERT(atoi("42") == ft_atoi("42"));
-		ASSERT(atoi("0") == ft_atoi("0"));
-		ASSERT(atoi("-666") == ft_atoi("-666"));
-		ASSERT(atoi("+69") == ft_atoi("+69"));
-		ASSERT(atoi("2147483647") == ft_atoi("2147483647"));
-		ASSERT(atoi("2147483648") == ft_atoi("2147483648"));
-		ASSERT(atoi("-2147483648") == ft_atoi("-2147483648"));
-		ASSERT(atoi("-2147483649") == ft_atoi("-2147483649"));
-		ASSERT(atoi("9999999999999") == ft_atoi("9999999999999"));
-		ASSERT(atoi("   +123abc") == ft_atoi("   +123abc"));
-		ASSERT(atoi("-----1") == ft_atoi("-----1"));
-		ASSERT(atoi("abc") == ft_atoi("abc"));
-		ASSERT(atoi("") == ft_atoi(""));
-		ASSERT(ft_atoi(NULL) == 0);
+		ASSERT(ft_strncmp("abc", "abc", 3) == strncmp("abc", "abc", 3));
+		ASSERT(ft_strncmp("ab_", "ab_", 2) == strncmp("ab_", "ab_", 2));
+		ASSERT(ft_strncmp("ABC", "ABC", 999) == strncmp("ABC", "ABC", 999));
+		ASSERT(ft_strncmp("abc", "abcX", 999) == strncmp("abc", "abcX", 999));
+		ASSERT(ft_strncmp("abcX", "abc", 999) == strncmp("abcX", "abc", 999));
+		ASSERT(ft_strncmp("", "", 999) == strncmp("", "", 999));
+		ASSERT(ft_strncmp("", "", 0) == strncmp("", "", 0));
+		ASSERT(ft_strncmp("abc\200", "abc\0", 6) == strncmp("abc\200", "abc\0", 6));
+		ASSERT(ft_strncmp("abc", NULL, 6) == 0);
+		ASSERT(ft_strncmp(NULL, "abc", 6) == 0);
 	}
 
 	SECTION("ft_calloc");
@@ -419,57 +419,6 @@ int main()
 		ASSERT(strcmp(ft_strjoin("abc", ""), "abc") == 0);
 		ASSERT(strcmp(ft_strjoin("", "def"), "def") == 0);
 		ASSERT(strcmp(ft_strjoin("", ""), "") == 0);
-	}
-
-	SECTION("ft_strtrim");
-	{
-		ASSERT(strcmp(ft_strtrim("   abc   def   ", " "), "abc   def") == 0);
-		ASSERT(strcmp(ft_strtrim("abc   ......", " ."), "abc") == 0);
-		ASSERT(strcmp(ft_strtrim("abc", " .+"), "abc") == 0);
-		ASSERT(strcmp(ft_strtrim("", ""), "") == 0);
-		ASSERT(ft_strtrim(NULL, "") == NULL);
-		ASSERT(ft_strtrim("", NULL) == NULL);
-	}
-
-	SECTION("ft_split");
-	{
-		char **parts = ft_split("  one  two  three  ", ' ');
-		ASSERT(parts != NULL);
-		ASSERT(strcmp(parts[0], "one") == 0);
-		ASSERT(strcmp(parts[1], "two") == 0);
-		ASSERT(strcmp(parts[2], "three") == 0);
-		ASSERT(parts[3] == NULL);
-
-		char **empty = ft_split("    ", ' ');
-		ASSERT(empty != NULL);
-		ASSERT(empty[0] == NULL);
-	}
-
-	SECTION("ft_itoa");
-	{
-		ASSERT(strcmp(ft_itoa(42), "42") == 0);
-		ASSERT(strcmp(ft_itoa(-666), "-666") == 0);
-		ASSERT(strcmp(ft_itoa(0), "0") == 0);
-		ASSERT(strcmp(ft_itoa(9), "9") == 0);
-		ASSERT(strcmp(ft_itoa(10), "10") == 0);
-		ASSERT(strcmp(ft_itoa(2147483647), "2147483647") == 0);
-		ASSERT(strcmp(ft_itoa(-2147483648), "-2147483648") == 0);
-	}
-
-	SECTION("ft_strmapi");
-	{
-		ASSERT(strcmp(ft_strmapi("abcDEF", uppercase), "ABCDEF") == 0);
-		ASSERT(strcmp(ft_strmapi("...", uppercase), "...") == 0);
-		ASSERT(strcmp(ft_strmapi("", uppercase), "") == 0);
-		ASSERT(ft_strmapi(NULL, uppercase) == NULL);
-		ASSERT(ft_strmapi("abc", NULL) == NULL);
-	}
-
-	SECTION("ft_striteri");
-	{
-		char buffer[] = "abcDEF...";
-		ft_striteri(buffer, uppercase_in_place);
-		ASSERT(strcmp(buffer, "ABCDEF...") == 0);
 	}
 
 	SECTION("ft_putchar_fd");
@@ -521,6 +470,57 @@ int main()
 		close(fd);
 	}
 
+	SECTION("ft_strmapi");
+	{
+		ASSERT(strcmp(ft_strmapi("abcDEF", uppercase), "ABCDEF") == 0);
+		ASSERT(strcmp(ft_strmapi("...", uppercase), "...") == 0);
+		ASSERT(strcmp(ft_strmapi("", uppercase), "") == 0);
+		ASSERT(ft_strmapi(NULL, uppercase) == NULL);
+		ASSERT(ft_strmapi("abc", NULL) == NULL);
+	}
+
+	SECTION("ft_striteri");
+	{
+		char buffer[] = "abcDEF...";
+		ft_striteri(buffer, uppercase_in_place);
+		ASSERT(strcmp(buffer, "ABCDEF...") == 0);
+	}
+
+	SECTION("ft_strtrim");
+	{
+		ASSERT(strcmp(ft_strtrim("   abc   def   ", " "), "abc   def") == 0);
+		ASSERT(strcmp(ft_strtrim("abc   ......", " ."), "abc") == 0);
+		ASSERT(strcmp(ft_strtrim("abc", " .+"), "abc") == 0);
+		ASSERT(strcmp(ft_strtrim("", ""), "") == 0);
+		ASSERT(ft_strtrim(NULL, "") == NULL);
+		ASSERT(ft_strtrim("", NULL) == NULL);
+	}
+
+	SECTION("ft_split");
+	{
+		char **parts = ft_split("  one  two  three  ", ' ');
+		ASSERT(parts != NULL);
+		ASSERT(strcmp(parts[0], "one") == 0);
+		ASSERT(strcmp(parts[1], "two") == 0);
+		ASSERT(strcmp(parts[2], "three") == 0);
+		ASSERT(parts[3] == NULL);
+
+		char **empty = ft_split("    ", ' ');
+		ASSERT(empty != NULL);
+		ASSERT(empty[0] == NULL);
+	}
+
+	SECTION("ft_itoa");
+	{
+		ASSERT(strcmp(ft_itoa(42), "42") == 0);
+		ASSERT(strcmp(ft_itoa(-666), "-666") == 0);
+		ASSERT(strcmp(ft_itoa(0), "0") == 0);
+		ASSERT(strcmp(ft_itoa(9), "9") == 0);
+		ASSERT(strcmp(ft_itoa(10), "10") == 0);
+		ASSERT(strcmp(ft_itoa(2147483647), "2147483647") == 0);
+		ASSERT(strcmp(ft_itoa(-2147483648), "-2147483648") == 0);
+	}
+
 #if BONUS
 
 	SECTION("ft_lstnew");
@@ -531,12 +531,42 @@ int main()
 		ASSERT(node->content == (void*) 42);
 	}
 
+	SECTION("ft_lstdelone");
+	{
+		int nodes_deleted = 0;
+		t_list *node = ft_lstnew(&nodes_deleted);
+		ft_lstdelone(node, increment_int);
+		ASSERT(nodes_deleted == 1);
+	}
+
+	SECTION("ft_lstclear");
+	{
+		int nodes_deleted = 0;
+		t_list *list = NULL;
+		ft_lstadd_back(&list, ft_lstnew(&nodes_deleted));
+		ft_lstadd_back(&list, ft_lstnew(&nodes_deleted));
+		ft_lstadd_back(&list, ft_lstnew(&nodes_deleted));
+		ft_lstclear(&list, increment_int);
+		ASSERT(nodes_deleted == 3);
+	}
+
 	SECTION("ft_lstadd_front");
 	{
 		t_list *list = NULL;
 		ft_lstadd_front(&list, ft_lstnew((void*) 3));
 		ft_lstadd_front(&list, ft_lstnew((void*) 2));
 		ft_lstadd_front(&list, ft_lstnew((void*) 1));
+		ASSERT(list->content == (void*) 1);
+		ASSERT(list->next->content == (void*) 2);
+		ASSERT(list->next->next->content == (void*) 3);
+	}
+
+	SECTION("ft_lstadd_back");
+	{
+		t_list *list = NULL;
+		ft_lstadd_back(&list, ft_lstnew((void*) 1));
+		ft_lstadd_back(&list, ft_lstnew((void*) 2));
+		ft_lstadd_back(&list, ft_lstnew((void*) 3));
 		ASSERT(list->content == (void*) 1);
 		ASSERT(list->next->content == (void*) 2);
 		ASSERT(list->next->next->content == (void*) 3);
@@ -562,36 +592,6 @@ int main()
 		ft_lstadd_front(&list, ft_lstnew((void*) 2));
 		ft_lstadd_front(&list, ft_lstnew((void*) 1));
 		ASSERT(ft_lstlast(list)->content == (void*) 3);
-	}
-
-	SECTION("ft_lstadd_back");
-	{
-		t_list *list = NULL;
-		ft_lstadd_back(&list, ft_lstnew((void*) 1));
-		ft_lstadd_back(&list, ft_lstnew((void*) 2));
-		ft_lstadd_back(&list, ft_lstnew((void*) 3));
-		ASSERT(list->content == (void*) 1);
-		ASSERT(list->next->content == (void*) 2);
-		ASSERT(list->next->next->content == (void*) 3);
-	}
-
-	SECTION("ft_lstdelone");
-	{
-		int nodes_deleted = 0;
-		t_list *node = ft_lstnew(&nodes_deleted);
-		ft_lstdelone(node, increment_int);
-		ASSERT(nodes_deleted == 1);
-	}
-
-	SECTION("ft_lstclear");
-	{
-		int nodes_deleted = 0;
-		t_list *list = NULL;
-		ft_lstadd_back(&list, ft_lstnew(&nodes_deleted));
-		ft_lstadd_back(&list, ft_lstnew(&nodes_deleted));
-		ft_lstadd_back(&list, ft_lstnew(&nodes_deleted));
-		ft_lstclear(&list, increment_int);
-		ASSERT(nodes_deleted == 3);
 	}
 
 	SECTION("ft_lstiter");
