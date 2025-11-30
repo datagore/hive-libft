@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:21:39 by abostrom          #+#    #+#             */
-/*   Updated: 2025/11/27 16:03:58 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/30 15:46:00 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**ft_split(const char *string, char delimiter)
 		return (NULL);
 	length = split(string, delimiter, NULL);
 	array = ft_calloc((length + 1), sizeof(char *));
-	if (array != NULL)
+	if (array)
 	{
 		if (split(string, delimiter, array) == (size_t) - 1)
 		{

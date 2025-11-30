@@ -6,7 +6,7 @@
 /*   By: abostrom <abostrom@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 10:53:17 by abostrom          #+#    #+#             */
-/*   Updated: 2025/11/27 16:11:20 by abostrom         ###   ########.fr       */
+/*   Updated: 2025/11/30 15:38:02 by abostrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ char	*ft_strjoin(const char *a, const char *b)
 		return (ft_strdup(a));
 	length = ft_strlen(a) + ft_strlen(b) + 1;
 	joined = ft_calloc(1, length);
-	if (joined != NULL)
-	{
-		ft_strlcat(joined, a, length);
-		ft_strlcat(joined, b, length);
-	}
+	ft_strlcat(joined, a, length);
+	ft_strlcat(joined, b, length);
 	return (joined);
 }
